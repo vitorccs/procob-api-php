@@ -1,0 +1,36 @@
+{
+    "name": "vitorccs/procob-api-php",
+    "description": "SDK PHP para a API da Procob S/A",
+    "keywords": [
+        "procob"
+    ],
+    "homepage": "https://github.com/vitorccs/procob-api-php",
+    "license": "GPL-3.0",
+    "require": {
+        "php": ">=7.0.0",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "php": ">=7.0",
+        "phpunit/phpunit": "^6"
+    },
+    "authors": [
+        {
+            "name": "Vitor Siqueira",
+            "email": "vitorccsiqueira@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Procob\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Procob\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --testdox"
+    }
+}

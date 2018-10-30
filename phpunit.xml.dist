@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <phpunit bootstrap="vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Procob API Test Suite">
+            <file>tests/ProcobTest.php</file>
+            <file>tests/PersonTest.php</file>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="PROCOB_API_TIMEOUT" value="30"/>
+        <env name="PROCOB_API_USER" value=""/>
+        <env name="PROCOB_API_PWD" value=""/>
+        <env name="DATA" value='{"basicPlan": true, "cpf":"147.082.809-04", "cnpj":"06.116.543/0001-55", "name": "Procob", "ddd": "11", "number": "26794674", "email": "procob@procob.com"}' />
+    </php>
+</phpunit>
