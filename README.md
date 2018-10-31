@@ -1,10 +1,9 @@
 # Procob API - SDK PHP
-SDK em PHP para consulta a API RESTful da Procob S.A
+SDK em PHP para consulta a API RESTful da Procob S.A.
 
 
 ## Descrição
-SDK em PHP para consulta a API RESTful da Procob S.A
-[Documentação da API da Procob S/A](https://api.procob.com/)
+SDK em PHP para consulta a API RESTful da Procob S.A. [Documentação da API da Procob S/A](https://api.procob.com/)
 
 
 ## Instalação
@@ -19,20 +18,58 @@ Os seguintes parâmetros devem ser informados:
 
 Parâmetro | Obrigatório | Padrão | Comentário
 ------------ | ------------- | ------------- | -------------
-PROCOB_API_USER | Não | sandbox@procob.com | Usuário da API para autenticar. Se omitido, será usuado o de teste.
-PROCOB_API_PWD | Não | TesteApi | Senha da API para autenticar. Se omitido, será usuado o de teste.
+PROCOB_API_USER | Sim | - | Usuário da API para autenticar.
+PROCOB_API_PWD | Sim | - | Senha da API para autenticar. Se omitido, será usuado o de teste.
 PROCOB_API_TIMEOUT | Não | 30 | Timeout em segundos para estabelecer conexão com a API
 
+
 ## Como usar
-Após definir as variáveis de ambiente acima, basta utilizar o comando abaixo passando os dados do boleto a registrar em formato `array`.
+Após definir as variáveis de ambiente acima, basta utilizar qualquer um dos métodos disponível abaixo.
 ```php
 $consulta = \Procob\Person::getByCpfCnpj($cpfCnpj);
 ```
+Você poderá usar o usuário e senha de testes da Procob (sandbox@procob.com | TesteApi), porém, os dados retornados pela API são todos fictícios s
+
+
+## Métodos disponíveis
+```php
+// CPF/CNPJ Completo
+Procob\Person::getByCpfCnpj($cpfCnpj)
+
+// CPF/CNPJ pelo Nome
+Procob\Person::getByName($cpfCnpj, $params = [])
+
+// DDD + Telefone
+Procob\Person::getByPhone($ddd, $number)
+
+// Sintegra
+Procob\Person::getCpfCnpjStatus($cpfCnpj, $params = [])
+
+// Quadro Societário / Participação em Empresa(s)
+Procob\Person::getCompanyPartners($cnpj)
+
+// Vizinhos
+Procob\Person::getNeighbors($params)
+
+// CPF/CNPJ pelo E-mail
+Procob\Person::getByEmail($email)
+
+// Número do Benefício
+Procob\Person::getNationalInsuranceStatus($cpf)
+
+// Dados Gerais
+Procob\Person::getBasicData($cpfCnpj)
+
+// Perfil CNPJ
+Procob\Person::getCompanyProfile($cnpj)
+```
+
 
 ## Normalização de dados
 * Os dados de CPF e CNPJ podem ser passados no formato número ou texto, com ou sem máscaras.
 * Os números de CPF e CNPJ sempre passam por validação de dados da própria SDK, evitando com isso consumir uma  requisição a API.
-* A SDK reconhece automaticamente quando a API da Procob não teve sucesso (código diferente de "000") e nestes casos, lança uma exceção (Exception) com a mensagem de erro.
+* A SDK reconhece automaticamente quando a API da Procob não teve sucesso (código diferente de "000") e nestes casos, lança uma "exceção" (Exception) com a mensagem de erro.
+
 
 ## Exemplo de implementação
 
@@ -43,31 +80,11 @@ ini_set('display_errors', 1);
 require __DIR__.'/vendor/autoload.php';
 
 putenv('PROCOB_API_TIMEOUT=30');
-// comment both lines below below for sandbox mode
-putenv('PROCOB_API_USER=user@company.com');
-putenv('PROCOB_API_PWD=password');
+putenv('PROCOB_API_USER=sandbox@procob.com');
+putenv('PROCOB_API_PWD=TesteApi');
 
 try {
     $response = Procob\Person::getByCpfCnpj('06.116.543/0001-55');
-
-    //$response = Procob\Person::getByName('Proc/ob');
-
-    //$response = Procob\Person::getByPhone(11, 26794674);
-
-    //$response = Procob\Person::getCpfCnpjStatus('06.116.543/0001-55');
-
-    //$response = Procob\Person::getCompanyPartners('06.116.543/0001-55');
-
-    //$response = Procob\Person::getNeighbors('06.116.543/0001-55');
-
-    //$response = Procob\Person::getByEmail('procob@procob.com');
-
-    //$response = Procob\Person::getNationalInsuranceStatus('14708280904');
-
-    //$response = Procob\Person::getBasicData('06.116.543/0001-55');
-
-    //$response = Procob\Person::getCompanyProfile('06.116.543/0001-55');
-
     print_r($response);
 } catch (\Exception $e) {
     die("Error: ". $e->getMessage() ."\n");

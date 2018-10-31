@@ -1,6 +1,8 @@
 <?php
 namespace Procob\Http;
 
+use Procob\Exceptions\ProcobParameterException;
+
 class Procob
 {
     const TIMEOUT                 = 'PROCOB_API_TIMEOUT';
@@ -13,9 +15,7 @@ class Procob
     private static $pwd           = null;
 
     private static $defTimeout    = 30;
-    private static $defUser       = 'sandbox@procob.com';
-    private static $defPwd        = 'TesteApi';
-    private static $sdkVersion    = "1.0.0";
+    private static $sdkVersion    = '1.0.1';
 
     public static function setTimeout(int $seconds = null)
     {
@@ -25,7 +25,7 @@ class Procob
             static::$timeout = getenv(static::TIMEOUT);
         }
 
-        if (static::$timeout === false) {
+        if (!is_numeric(static::$timeout)) {
             static::$timeout = static::$defTimeout;
         }
     }
@@ -38,8 +38,8 @@ class Procob
             static::$user = getenv(static::USER);
         }
 
-        if (static::$user === false) {
-            static::$user = static::$defUser;
+        if (!strlen(static::$user)) {
+            throw new ProcobParameterException("Missing required parameter '". static::USER ."'");
         }
     }
 
@@ -51,8 +51,8 @@ class Procob
             static::$pwd = getenv(static::PWD);
         }
 
-        if (static::$pwd === false) {
-            static::$pwd = static::$defPwd;
+        if (!strlen(static::$pwd)) {
+            throw new ProcobParameterException("Missing required parameter '". static::PWD ."'");
         }
     }
 
