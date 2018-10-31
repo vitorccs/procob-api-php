@@ -9,33 +9,33 @@ class PersonValidator
 {
     public static function validateCpf($cpf)
     {
-        if (!Validator::validateCpf($cpf)) {
+        $cpf = Sanitizer::cleanNumeric($cpf);
+
+        if (!strlen($cpf) || !Validator::validateCpf($cpf)) {
             throw new ProcobParameterException('CPF is not valid');
         }
-
-        $cpf = Sanitizer::cleanNumeric($cpf);
 
         return $cpf;
     }
 
     public static function validateCnpj($cnpj)
     {
-        if (!Validator::validateCpfCnpj($cnpj)) {
+        $cnpj = Sanitizer::cleanNumeric($cnpj);
+
+        if (!strlen($cnpj) || !Validator::validateCpfCnpj($cnpj)) {
             throw new ProcobParameterException('CNPJ is not valid');
         }
-
-        $cnpj = Sanitizer::cleanNumeric($cnpj);
 
         return $cnpj;
     }
 
     public static function validateCpfCnpj($cpfCnpj)
     {
-        if (!Validator::validateCpfCnpj($cpfCnpj)) {
+        $cpfCnpj = Sanitizer::cleanNumeric($cpfCnpj);
+
+        if (!strlen($cpfCnpj) || !Validator::validateCpfCnpj($cpfCnpj)) {
             throw new ProcobParameterException('CPF/CNPJ is not valid');
         }
-
-        $cpfCnpj = Sanitizer::cleanNumeric($cpfCnpj);
 
         return $cpfCnpj;
     }
@@ -64,7 +64,7 @@ class PersonValidator
 
     public static function validatePhoneDdd($ddd)
     {
-        $ddd    = Sanitizer::cleanNumeric($ddd);
+        $ddd = Sanitizer::cleanNumeric($ddd);
 
         if (strlen($ddd) != 2) {
             throw new ProcobParameterException('DDD is not valid');

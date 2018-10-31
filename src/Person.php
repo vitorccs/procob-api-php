@@ -42,7 +42,7 @@ class Person extends Resource
         return parent::find('v3/L0006', $cnpj);
     }
 
-    public static function getNeighbors(array $params = [])
+    public static function getNeighbors(array $params)
     {
         return parent::find('v1/L0038', null, $params);
     }

@@ -32,15 +32,37 @@ Você poderá usar o usuário e senha de testes da Procob (sandbox@procob.com | 
 
 
 ## Métodos disponíveis
-Procob\Person::getByName($cpfCnpj)
+```php
+// CPF/CNPJ Completo
+Procob\Person::getByCpfCnpj($cpfCnpj)
+
+// CPF/CNPJ pelo Nome
+Procob\Person::getByName($cpfCnpj, $params = [])
+
+// DDD + Telefone
 Procob\Person::getByPhone($ddd, $number)
-Procob\Person::getCpfCnpjStatus($cpfCnpj)
+
+// Sintegra
+Procob\Person::getCpfCnpjStatus($cpfCnpj, $params = [])
+
+// Quadro Societário / Participação em Empresa(s)
 Procob\Person::getCompanyPartners($cnpj)
+
+// Vizinhos
 Procob\Person::getNeighbors($params)
+
+// CPF/CNPJ pelo E-mail
 Procob\Person::getByEmail($email)
-Procob\Person::getNationalInsuranceStatus($cpfCnpj)
+
+// Número do Benefício
+Procob\Person::getNationalInsuranceStatus($cpf)
+
+// Dados Gerais
 Procob\Person::getBasicData($cpfCnpj)
+
+// Perfil CNPJ
 Procob\Person::getCompanyProfile($cnpj)
+```
 
 
 ## Normalização de dados

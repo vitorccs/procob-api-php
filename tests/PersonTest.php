@@ -45,7 +45,27 @@ class PersonTest extends TestCase
      * @expectedException        Procob\Exceptions\ProcobParameterException
      * @expectedExceptionMessage CPF/CNPJ is not valid
      */
-    public function it_should_validate_cpf_cnpj()
+    public function it_should_validate_empty_cpf_cnpj()
+    {
+        Person::getByCpfCnpj('');
+    }
+
+    /**
+     * @test
+     * @expectedException        Procob\Exceptions\ProcobParameterException
+     * @expectedExceptionMessage CPF/CNPJ is not valid
+     */
+    public function it_should_validate_null_cpf_cnpj()
+    {
+        Person::getByCpfCnpj(null);
+    }
+
+    /**
+     * @test
+     * @expectedException        Procob\Exceptions\ProcobParameterException
+     * @expectedExceptionMessage CPF/CNPJ is not valid
+     */
+    public function it_should_validate_invalid_cpf_cnpj()
     {
         Person::getByCpfCnpj('invalid');
     }
@@ -60,6 +80,26 @@ class PersonTest extends TestCase
         $success = ($response->code ?? null) === '000';
 
         $this->assertTrue($success);
+    }
+
+    /**
+     * @test
+     * @expectedException        Procob\Exceptions\ProcobParameterException
+     * @expectedExceptionMessage Name is not valid
+     */
+    public function it_should_validate_empty_name()
+    {
+        Person::getByName('');
+    }
+
+    /**
+     * @test
+     * @expectedException        Procob\Exceptions\ProcobParameterException
+     * @expectedExceptionMessage Name is not valid
+     */
+    public function it_should_validate_invalid_name()
+    {
+        Person::getByName("/");
     }
 
     /**
@@ -86,16 +126,6 @@ class PersonTest extends TestCase
 
     /**
      * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage Name is not valid
-     */
-    public function it_should_validate_name()
-    {
-        Person::getByName("/");
-    }
-
-    /**
-     * @test
      */
     public function it_should_get_by_phone()
     {
@@ -111,7 +141,7 @@ class PersonTest extends TestCase
      * @expectedException        Procob\Exceptions\ProcobParameterException
      * @expectedExceptionMessage DDD is not valid
      */
-    public function it_should_validate_ddd()
+    public function it_should_validate_null_ddd()
     {
         Person::getByPhone(null, $this->data->number);
     }
@@ -119,11 +149,31 @@ class PersonTest extends TestCase
     /**
      * @test
      * @expectedException        Procob\Exceptions\ProcobParameterException
+     * @expectedExceptionMessage DDD is not valid
+     */
+    public function it_should_validate_invalid_ddd()
+    {
+        Person::getByPhone(1, $this->data->number);
+    }
+
+    /**
+     * @test
+     * @expectedException        Procob\Exceptions\ProcobParameterException
      * @expectedExceptionMessage Number is not valid
      */
-    public function it_should_validate_number()
+    public function it_should_validate_null_number()
     {
         Person::getByPhone($this->data->ddd, null);
+    }
+
+    /**
+     * @test
+     * @expectedException        Procob\Exceptions\ProcobParameterException
+     * @expectedExceptionMessage Number is not valid
+     */
+    public function it_should_validate_invalid_number()
+    {
+        Person::getByPhone($this->data->ddd, 111);
     }
 
     /**
