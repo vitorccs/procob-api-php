@@ -34,4 +34,27 @@ class ProcobTest extends TestCase
 
         $this->assertEquals($procobValue, $envValue);
     }
+
+    /** @test */
+    public function it_should_set_by_params()
+    {
+        // set random value
+        $params = [
+            Procob::TIMEOUT => '60',
+            Procob::USER => 'usuario',
+            Procob::PWD => 'senha'
+        ];
+        Procob::setParams($params);
+        $this->assertEquals(Procob::getTimeout(), $params[Procob::TIMEOUT]);
+        $this->assertEquals(Procob::getUser(), $params[Procob::USER]);
+        $this->assertEquals(Procob::getPassword(), $params[Procob::PWD]);
+
+        // rollback
+        $params = [
+            Procob::TIMEOUT => getenv(Procob::TIMEOUT),
+            Procob::USER => getenv(Procob::USER),
+            Procob::PWD => getenv(Procob::PWD)
+        ];
+        Procob::setParams($params);
+    }
 }

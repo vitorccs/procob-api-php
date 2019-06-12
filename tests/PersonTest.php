@@ -114,8 +114,6 @@ class PersonTest extends TestCase
 
         $response = Person::getByName('João', $params);
 
-        print_r($response);
-
         $success = ($response->code ?? null) === '000';
 
         $noCompanies = is_null($response->content->cnpj ?? null);

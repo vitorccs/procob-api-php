@@ -15,7 +15,22 @@ class Procob
     private static $pwd           = null;
 
     private static $defTimeout    = 30;
-    private static $sdkVersion    = '1.0.1';
+    private static $sdkVersion    = '1.0.2';
+
+    public static function setParams(array $params)
+    {
+        if (isset($params[static::TIMEOUT])) {
+            static::setTimeout($params[static::TIMEOUT]);
+        }
+
+        if (isset($params[static::USER])) {
+            static::setUser($params[static::USER]);
+        }
+
+        if (isset($params[static::PWD])) {
+            static::setPassword($params[static::PWD]);
+        }
+    }
 
     public static function setTimeout(int $seconds = null)
     {
