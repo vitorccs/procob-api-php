@@ -13,9 +13,7 @@ composer require vitorccs/procob-api-php
 ```
 
 
-## Variáveis de ambiente
-Os seguintes parâmetros devem ser informados:
-
+## Parâmetros
 Parâmetro | Obrigatório | Padrão | Comentário
 ------------ | ------------- | ------------- | -------------
 PROCOB_API_USER | Sim | - | Usuário da API para autenticar.
@@ -24,7 +22,22 @@ PROCOB_API_TIMEOUT | Não | 30 | Timeout em segundos para estabelecer conexão c
 
 
 ## Como usar
-Após definir as variáveis de ambiente acima, basta utilizar qualquer um dos métodos disponível abaixo.
+1) Os parâmetros podem ser definidos por váriaveis de ambiente:
+```php
+putenv('PROCOB_API_USER=sandbox@procob.com');
+putenv('PROCOB_API_PWD=TesteApi');
+putenv('PROCOB_API_TIMEOUT=30');
+```
+
+ou passados por `array`:
+```php
+\Procob\Http\Procob::setParams([
+    'PROCOB_API_USER' => 'sandbox@procob.com',
+    'PROCOB_API_PWD' => 'TesteApi',
+    'PROCOB_API_TIMEOUT' => 30
+]);
+```
+2) Em seguida, basta utilizar qualquer um dos métodos disponíveís:
 ```php
 $consulta = \Procob\Person::getByCpfCnpj($cpfCnpj);
 ```
