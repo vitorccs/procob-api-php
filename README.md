@@ -102,7 +102,7 @@ putenv('PROCOB_API_PWD=TesteApi');
 try {
     $response = Procob\Person::getByCpfCnpj('06.116.543/0001-55');
     print_r($response);
-} catch (ProcobApiException $e) { // erros retornados pela API Bradesco
+} catch (ProcobApiException $e) { // erros retornados pela API Procob
     echo sprintf("%s (%s)", $e->getMessage(), $e->getErrorCode());
 } catch (ProcobRequestException $e) { // erros de servidor (erros HTTP 4xx e 5xx)
     echo sprintf("%s (%s)", $e->getMessage(), $e->getErrorCode());
