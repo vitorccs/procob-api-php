@@ -1,11 +1,21 @@
 <?php
+
 namespace Procob;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Procob\Http\Resource;
 use Procob\Helpers\PersonValidator;
 
 class Person extends Resource
 {
+    /**
+     * @param mixed $cpfCnpj
+     * @return mixed
+     * @throws Exceptions\ProcobApiException
+     * @throws Exceptions\ProcobParameterException
+     * @throws Exceptions\ProcobRequestException
+     * @throws GuzzleException
+     */
     public static function getByCpfCnpj($cpfCnpj)
     {
         $cpfCnpj = PersonValidator::validateCpfCnpj($cpfCnpj);
@@ -13,6 +23,15 @@ class Person extends Resource
         return parent::find('v2/L0001', $cpfCnpj);
     }
 
+    /**
+     * @param string $name
+     * @param array $params
+     * @return mixed
+     * @throws Exceptions\ProcobApiException
+     * @throws Exceptions\ProcobParameterException
+     * @throws Exceptions\ProcobRequestException
+     * @throws GuzzleException
+     */
     public static function getByName(string $name, array $params = [])
     {
         $name = PersonValidator::validateName($name);
@@ -20,14 +39,32 @@ class Person extends Resource
         return parent::find('v2/L0002', $name, $params);
     }
 
+    /**
+     * @param $ddd
+     * @param $number
+     * @return mixed
+     * @throws Exceptions\ProcobApiException
+     * @throws Exceptions\ProcobParameterException
+     * @throws Exceptions\ProcobRequestException
+     * @throws GuzzleException
+     */
     public static function getByPhone($ddd, $number)
     {
-        $ddd    = PersonValidator::validatePhoneDdd($ddd);
+        $ddd = PersonValidator::validatePhoneDdd($ddd);
         $number = PersonValidator::validatePhoneNumber($number);
 
         return parent::find('L0003', "$ddd/$number");
     }
 
+    /**
+     * @param $cpfCnpj
+     * @param array $params
+     * @return mixed
+     * @throws Exceptions\ProcobApiException
+     * @throws Exceptions\ProcobParameterException
+     * @throws Exceptions\ProcobRequestException
+     * @throws GuzzleException
+     */
     public static function getCpfCnpjStatus($cpfCnpj, array $params = [])
     {
         $cpfCnpj = PersonValidator::validateCpfCnpj($cpfCnpj);
@@ -35,6 +72,14 @@ class Person extends Resource
         return parent::find('v2/L0014', $cpfCnpj, $params);
     }
 
+    /**
+     * @param $cnpj
+     * @return mixed
+     * @throws Exceptions\ProcobApiException
+     * @throws Exceptions\ProcobParameterException
+     * @throws Exceptions\ProcobRequestException
+     * @throws GuzzleException
+     */
     public static function getCompanyPartners($cnpj)
     {
         $cnpj = PersonValidator::validateCnpj($cnpj);
@@ -42,11 +87,26 @@ class Person extends Resource
         return parent::find('v3/L0006', $cnpj);
     }
 
+    /**
+     * @param array $params
+     * @return mixed
+     * @throws Exceptions\ProcobApiException
+     * @throws Exceptions\ProcobRequestException
+     * @throws GuzzleException
+     */
     public static function getNeighbors(array $params)
     {
         return parent::find('v1/L0038', null, $params);
     }
 
+    /**
+     * @param string $email
+     * @return mixed
+     * @throws Exceptions\ProcobApiException
+     * @throws Exceptions\ProcobParameterException
+     * @throws Exceptions\ProcobRequestException
+     * @throws GuzzleException
+     */
     public static function getByEmail(string $email)
     {
         $email = PersonValidator::validateEmail($email);
@@ -54,6 +114,14 @@ class Person extends Resource
         return parent::find('v1/L0035', $email);
     }
 
+    /**
+     * @param mixed $cpf
+     * @return mixed
+     * @throws Exceptions\ProcobApiException
+     * @throws Exceptions\ProcobParameterException
+     * @throws Exceptions\ProcobRequestException
+     * @throws GuzzleException
+     */
     public static function getNationalInsuranceStatus($cpf)
     {
         $cpf = PersonValidator::validateCpf($cpf);
@@ -61,6 +129,14 @@ class Person extends Resource
         return parent::find('v1/L0033', $cpf);
     }
 
+    /**
+     * @param mixed $cpfCnpj
+     * @return mixed
+     * @throws Exceptions\ProcobApiException
+     * @throws Exceptions\ProcobParameterException
+     * @throws Exceptions\ProcobRequestException
+     * @throws GuzzleException
+     */
     public static function getBasicData($cpfCnpj)
     {
         $cpfCnpj = PersonValidator::validateCpfCnpj($cpfCnpj);
@@ -68,6 +144,14 @@ class Person extends Resource
         return parent::find('v1/L0032', $cpfCnpj);
     }
 
+    /**
+     * @param mixed $cnpj
+     * @return mixed
+     * @throws Exceptions\ProcobApiException
+     * @throws Exceptions\ProcobParameterException
+     * @throws Exceptions\ProcobRequestException
+     * @throws GuzzleException
+     */
     public static function getCompanyProfile($cnpj)
     {
         $cnpj = PersonValidator::validateCnpj($cnpj);

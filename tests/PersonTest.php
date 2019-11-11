@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace ApiBradesco\Test;
 
 use PHPUnit\Framework\TestCase;
-use Procob\Exceptions\ProcobValidationException;
+use Procob\Exceptions\ProcobApiException;
 use Procob\Person;
 
 class PersonTest extends TestCase
@@ -192,7 +192,7 @@ class PersonTest extends TestCase
     public function it_should_get_company_partners()
     {
         if ($this->data->basicPlan) {
-            $this->expectException(ProcobValidationException::class);
+            $this->expectException(ProcobApiException::class);
         }
 
         $response = Person::getCompanyPartners($this->data->cnpj);
@@ -273,7 +273,7 @@ class PersonTest extends TestCase
     public function it_should_get_company_profile()
     {
         if ($this->data->basicPlan) {
-            $this->expectException(ProcobValidationException::class);
+            $this->expectException(ProcobApiException::class);
         }
 
         $response = Person::getCompanyProfile($this->data->cnpj);

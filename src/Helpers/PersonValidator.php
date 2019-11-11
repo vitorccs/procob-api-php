@@ -1,12 +1,16 @@
 <?php
+
 namespace Procob\Helpers;
 
 use Procob\Exceptions\ProcobParameterException;
-use Procob\Helpers\Sanitizer;
-use Procob\Helpers\Validator;
 
 class PersonValidator
 {
+    /**
+     * @param $cpf
+     * @return string|string[]|null
+     * @throws ProcobParameterException
+     */
     public static function validateCpf($cpf)
     {
         $cpf = Sanitizer::cleanNumeric($cpf);
@@ -18,6 +22,11 @@ class PersonValidator
         return $cpf;
     }
 
+    /**
+     * @param $cnpj
+     * @return string|string[]|null
+     * @throws ProcobParameterException
+     */
     public static function validateCnpj($cnpj)
     {
         $cnpj = Sanitizer::cleanNumeric($cnpj);
@@ -29,6 +38,11 @@ class PersonValidator
         return $cnpj;
     }
 
+    /**
+     * @param $cpfCnpj
+     * @return string|string[]|null
+     * @throws ProcobParameterException
+     */
     public static function validateCpfCnpj($cpfCnpj)
     {
         $cpfCnpj = Sanitizer::cleanNumeric($cpfCnpj);
@@ -40,6 +54,11 @@ class PersonValidator
         return $cpfCnpj;
     }
 
+    /**
+     * @param $name
+     * @return string|string[]|null
+     * @throws ProcobParameterException
+     */
     public static function validateName($name)
     {
         $name = Sanitizer::cleanString($name);
@@ -51,6 +70,11 @@ class PersonValidator
         return $name;
     }
 
+    /**
+     * @param $email
+     * @return string|string[]|null
+     * @throws ProcobParameterException
+     */
     public static function validateEmail($email)
     {
         $email = Sanitizer::cleanString($email);
@@ -62,6 +86,11 @@ class PersonValidator
         return $email;
     }
 
+    /**
+     * @param $ddd
+     * @return string|string[]|null
+     * @throws ProcobParameterException
+     */
     public static function validatePhoneDdd($ddd)
     {
         $ddd = Sanitizer::cleanNumeric($ddd);
@@ -73,6 +102,11 @@ class PersonValidator
         return $ddd;
     }
 
+    /**
+     * @param $number
+     * @return string|string[]|null
+     * @throws ProcobParameterException
+     */
     public static function validatePhoneNumber($number)
     {
         $number = Sanitizer::cleanNumeric($number);
@@ -84,4 +118,4 @@ class PersonValidator
         return $number;
     }
 }
-?>
+

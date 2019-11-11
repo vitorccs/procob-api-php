@@ -1,22 +1,49 @@
 <?php
+
 namespace Procob\Http;
 
 use Procob\Exceptions\ProcobParameterException;
 
 class Procob
 {
-    const TIMEOUT                 = 'PROCOB_API_TIMEOUT';
-    const USER                    = 'PROCOB_API_USER';
-    const PWD                     = 'PROCOB_API_PWD';
+    const TIMEOUT = 'PROCOB_API_TIMEOUT';
+    const USER = 'PROCOB_API_USER';
+    const PWD = 'PROCOB_API_PWD';
 
-    private static $apiUrl        = 'https://api.procob.com/consultas/';
-    private static $timeout       = null;
-    private static $user          = null;
-    private static $pwd           = null;
+    /**
+     * @var string
+     */
+    private static $apiUrl = 'https://api.procob.com/consultas/';
 
-    private static $defTimeout    = 30;
-    private static $sdkVersion    = '1.0.2';
+    /**
+     * @var int|null
+     */
+    private static $timeout = null;
 
+    /**
+     * @var string|null
+     */
+    private static $user = null;
+
+    /**
+     * @var string|null
+     */
+    private static $pwd = null;
+
+    /**
+     * @var int
+     */
+    private static $defTimeout = 30;
+
+    /**
+     * @var string
+     */
+    private static $sdkVersion = '1.0.3';
+
+    /**
+     * @param array $params
+     * @throws ProcobParameterException
+     */
     public static function setParams(array $params)
     {
         if (isset($params[static::TIMEOUT])) {
@@ -32,6 +59,9 @@ class Procob
         }
     }
 
+    /**
+     * @param int|null $seconds
+     */
     public static function setTimeout(int $seconds = null)
     {
         static::$timeout = $seconds;
@@ -45,6 +75,10 @@ class Procob
         }
     }
 
+    /**
+     * @param string|null $user
+     * @throws ProcobParameterException
+     */
     public static function setUser(string $user = null)
     {
         static::$user = $user;
@@ -54,10 +88,14 @@ class Procob
         }
 
         if (!strlen(static::$user)) {
-            throw new ProcobParameterException("Missing required parameter '". static::USER ."'");
+            throw new ProcobParameterException("Missing required parameter '" . static::USER . "'");
         }
     }
 
+    /**
+     * @param string|null $pwd
+     * @throws ProcobParameterException
+     */
     public static function setPassword(string $pwd = null)
     {
         static::$pwd = $pwd;
@@ -67,15 +105,21 @@ class Procob
         }
 
         if (!strlen(static::$pwd)) {
-            throw new ProcobParameterException("Missing required parameter '". static::PWD ."'");
+            throw new ProcobParameterException("Missing required parameter '" . static::PWD . "'");
         }
     }
 
+    /**
+     * @return string
+     */
     public static function getApiUrl()
     {
         return static::$apiUrl;
     }
 
+    /**
+     * @return int|null
+     */
     public static function getTimeout()
     {
         if (static::$timeout === null) {
@@ -85,6 +129,10 @@ class Procob
         return static::$timeout;
     }
 
+    /**
+     * @return string|null
+     * @throws ProcobParameterException
+     */
     public static function getUser()
     {
         if (static::$user === null) {
@@ -94,6 +142,10 @@ class Procob
         return static::$user;
     }
 
+    /**
+     * @return string|null
+     * @throws ProcobParameterException
+     */
     public static function getPassword()
     {
         if (static::$pwd === null) {
@@ -103,6 +155,9 @@ class Procob
         return static::$pwd;
     }
 
+    /**
+     * @return string
+     */
     public static function getSdkVersion()
     {
         return static::$sdkVersion;
