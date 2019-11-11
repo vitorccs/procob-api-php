@@ -87,10 +87,13 @@ Procob\Person::getCompanyProfile($cnpj)
 ## Exemplo de implementação
 
 ```php
+use Procob\Exceptions\ProcobApiException;
+use Procob\Exceptions\ProcobRequestException;
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require __DIR__.'/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 putenv('PROCOB_API_TIMEOUT=30');
 putenv('PROCOB_API_USER=sandbox@procob.com');
@@ -99,11 +102,13 @@ putenv('PROCOB_API_PWD=TesteApi');
 try {
     $response = Procob\Person::getByCpfCnpj('06.116.543/0001-55');
     print_r($response);
-} catch (\Exception $e) {
-    die("Error: ". $e->getMessage() ."\n");
-}
-
-die("Success \n");
+} catch (ProcobApiException $e) { // erros retornados pela API Bradesco
+    echo sprintf("%s (%s)", $e->getMessage(), $e->getErrorCode());
+} catch (ProcobRequestException $e) { // erros de servidor (erros HTTP 4xx e 5xx)
+    echo sprintf("%s (%s)", $e->getMessage(), $e->getErrorCode());
+} catch (\Exception $e) { // demais erros
+    echo $e->getMessage();
+} 
 ```
 
 ## Testes

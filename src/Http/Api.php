@@ -125,9 +125,7 @@ class Api
 
         if ($code === 0) return;
 
-        $message = "{$reason} ($code)";
-
-        throw new ProcobApiException($message);
+        throw new ProcobApiException($reason, $code);
     }
 
     /**
@@ -139,8 +137,6 @@ class Api
         $code = $response->getStatusCode();
         $reason = $response->getReasonPhrase();
 
-        $message = "{$reason} ($code)";
-
-        throw new ProcobRequestException($message);
+        throw new ProcobRequestException($reason, $code);
     }
 }
