@@ -1,25 +1,24 @@
 <?php
+
 namespace Procob\Helpers;
 
 class Validator
 {
-    public static function validateCpf($cpf)
+    /**
+     * @param $cpf
+     * @return bool
+     */
+    public static function validateCpf($cpf): bool
     {
-        // Verifica se um número foi informado
-        if (empty($cpf)) {
-            return true;
-        }
+        if (empty($cpf)) return false;
 
-        // Elimina possivel mascara
+        // removes mask
         $cpf = preg_replace('/[^0-9]/', '', $cpf);
         $cpf = str_pad($cpf, 11, '0', STR_PAD_LEFT);
 
-        // Verifica se o numero de digitos informados é igual a 11
-        if (strlen($cpf) != 11) {
-            return false;
-        }
-        // Verifica se nenhuma das sequências invalidas abaixo
-        // foi digitada. Caso afirmativo, retorna falso
+        if (strlen($cpf) != 11) return false;
+
+        // prevent invalid numbers that cannot be detected in the digit calculation
         elseif ($cpf == '00000000000' ||
             $cpf == '11111111111' ||
             $cpf == '22222222222' ||
@@ -31,8 +30,6 @@ class Validator
             $cpf == '88888888888' ||
             $cpf == '99999999999') {
             return false;
-            // Calcula os digitos verificadores para verificar se o
-         // CPF é válido
         } else {
             for ($t = 9; $t < 11; $t++) {
                 for ($d = 0, $c = 0; $c < $t; $c++) {
@@ -48,40 +45,46 @@ class Validator
         }
     }
 
-    public static function validateCnpj($cnpj)
+    /**
+     * @param $cnpj
+     * @return bool
+     */
+    public static function validateCnpj($cnpj): bool
     {
-        if (empty($cnpj)) {
-            return true;
+        if (empty($cnpj)) return false;
+
+        // removes mask
+        $cnpj = preg_replace('/[^0-9]/', '', (string)$cnpj);
+
+        if (strlen($cnpj) != 14) return false;
+
+        // check first validator digit
+        for ($i = 0, $j = 5, $sum = 0; $i < 12; $i++) {
+            $sum += $cnpj{$i} * $j;
+            $j = ($j == 2) ? 9 : $j - 1;
         }
+        $remainder = $sum % 11;
 
-        $cnpj = preg_replace('/[^0-9]/', '', (string) $cnpj);
-
-        // Valida tamanho
-        if (strlen($cnpj) != 14) {
+        if ($cnpj{12} != ($remainder < 2 ? 0 : 11 - $remainder)) {
             return false;
         }
 
-        // Valida primeiro dígito verificador
-        for ($i = 0, $j = 5, $soma = 0; $i < 12; $i++) {
-            $soma += $cnpj{$i} * $j;
+        // check second validator digit
+        for ($i = 0, $j = 6, $sum = 0; $i < 13; $i++) {
+            $sum += $cnpj{$i} * $j;
             $j = ($j == 2) ? 9 : $j - 1;
         }
-        $resto = $soma % 11;
-        if ($cnpj{12} != ($resto < 2 ? 0 : 11 - $resto)) {
-            return false;
-        }
-        // Valida segundo dígito verificador
-        for ($i = 0, $j = 6, $soma = 0; $i < 13; $i++) {
-            $soma += $cnpj{$i} * $j;
-            $j = ($j == 2) ? 9 : $j - 1;
-        }
-        $resto = $soma % 11;
-        return $cnpj{13} == ($resto < 2 ? 0 : 11 - $resto);
+        $remainder = $sum % 11;
+
+        return $cnpj{13} == ($remainder < 2 ? 0 : 11 - $remainder);
     }
 
-    public static function validateCpfCnpj($string)
+    /**
+     * @param $string
+     * @return bool
+     */
+    public static function validateCpfCnpj($string): bool
     {
         return (static::validateCpf($string) || static::validateCnpj($string));
     }
 }
-?>

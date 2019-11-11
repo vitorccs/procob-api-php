@@ -3,13 +3,20 @@ namespace Procob\Http;
 
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\TransferStats;
+use Procob\Exceptions\ProcobParameterException;
 
 class Client extends Guzzle
 {
+    /**
+     * @var string
+     */
     protected $fullUrl;
-    protected $certKey;
-    protected $privateKey;
 
+    /**
+     * Client constructor.
+     * @param array $config
+     * @throws ProcobParameterException
+     */
     public function __construct(array $config = [])
     {
         $this->setConfig($config);
@@ -17,6 +24,11 @@ class Client extends Guzzle
         parent::__construct($config);
     }
 
+    /**
+     * @param array $config
+     * @return array
+     * @throws ProcobParameterException
+     */
     public function setConfig(array &$config)
     {
         $sdkVersion = Procob::getSdkVersion();
@@ -40,11 +52,18 @@ class Client extends Guzzle
         return $config;
     }
 
+    /**
+     * @return mixed
+     */
     public function getFullUrl()
     {
         return $this->fullUrl;
     }
 
+    /**
+     * @return string
+     * @throws ProcobParameterException
+     */
     public function getCredentials()
     {
         $username = Procob::getUser();

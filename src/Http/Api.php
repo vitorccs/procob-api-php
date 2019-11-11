@@ -1,33 +1,64 @@
 <?php
+
 namespace Procob\Http;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
-use Procob\Exceptions\ProcobValidationException;
+use Procob\Exceptions\ProcobApiException;
 use Procob\Exceptions\ProcobRequestException;
 
 class Api
 {
+    /**
+     * @var Client
+     */
     protected $client;
 
+    /**
+     * Api constructor.
+     */
     public function __construct()
     {
         $this->client = new Client();
     }
 
+    /**
+     * @param string|null $endpoint
+     * @param string|null $data
+     * @param array $options
+     * @return mixed
+     * @throws GuzzleException
+     * @throws ProcobRequestException
+     * @throws ProcobApiException
+     */
     public function get(string $endpoint = null, string $data = null, array $options = [])
     {
         return $this->request('GET', $endpoint, $data, $options);
     }
 
+    /**
+     * @param string|null $endpoint
+     * @param string|null $data
+     * @return string
+     */
     private static function getEndpointUrl(string $endpoint = null, string $data = null)
     {
-        if (!empty($data)) $endpoint .= "/". $data;
+        if (!empty($data)) $endpoint .= "/" . $data;
 
         return $endpoint;
     }
 
+    /**
+     * @param string $method
+     * @param string|null $endpoint
+     * @param string|null $data
+     * @param array $options
+     * @return mixed
+     * @throws GuzzleException
+     * @throws ProcobRequestException
+     * @throws ProcobApiException
+     */
     private function request(string $method, string $endpoint = null, string $data = null, array $options = [])
     {
         $url = $this->getEndpointUrl($endpoint, $data);
@@ -45,6 +76,12 @@ class Api
         return $this->response($response);
     }
 
+    /**
+     * @param ResponseInterface $response
+     * @return mixed
+     * @throws ProcobRequestException
+     * @throws ProcobApiException
+     */
     private function response(ResponseInterface $response)
     {
         $content = $response->getBody()->getContents();
@@ -56,37 +93,51 @@ class Api
         return $data;
     }
 
+    /**
+     * @param ResponseInterface $response
+     * @param \stdClass $data
+     * @throws ProcobRequestException
+     * @throws ProcobApiException
+     */
     private function checkForErrors(ResponseInterface $response, \stdClass $data)
     {
-        $code           = $response->getStatusCode();
-        $statusClass    = (int) ($code / 100);
+        $code = $response->getStatusCode();
+        $statusClass = (int)($code / 100);
 
-        // Not in accordante to REST API specification:
+        // Not in accordance to REST API specification:
         // Request errors are received as "200 OK" rather than
         // "400 Bad Request" or "422 Unprocessable Entity"
-        $this->ProcobValidationException($data);
+        $this->checkForApiException($data);
 
         if ($statusClass === 4 || $statusClass === 5) {
             $this->checkForRequestException($response);
         }
     }
 
-    private function ProcobValidationException(\stdClass $data)
+    /**
+     * @param \stdClass $data
+     * @throws ProcobApiException
+     */
+    private function checkForApiException(\stdClass $data)
     {
-        $code    = intval($data->code ?? 0);
-        $reason  = $data->message ?? 'Unknown error';
+        $code = intval($data->code ?? 0);
+        $reason = $data->message ?? 'Unknown error';
 
         if ($code === 0) return;
 
         $message = "{$reason} ($code)";
 
-        throw new ProcobValidationException($message);
+        throw new ProcobApiException($message);
     }
 
+    /**
+     * @param ResponseInterface $response
+     * @throws ProcobRequestException
+     */
     private function checkForRequestException(ResponseInterface $response)
     {
-        $code    = $response->getStatusCode();
-        $reason  = $response->getReasonPhrase();
+        $code = $response->getStatusCode();
+        $reason = $response->getReasonPhrase();
 
         $message = "{$reason} ($code)";
 
