@@ -41,7 +41,7 @@ ou passados por `array`:
 ```php
 $consulta = \Procob\Person::getByCpfCnpj($cpfCnpj);
 ```
-Você poderá usar o usuário e senha de testes da Procob (sandbox@procob.com | TesteApi), porém, os dados retornados pela API são todos fictícios s
+Você poderá usar o usuário e senha de testes da Procob (sandbox@procob.com | TesteApi), porém, os dados retornados pela API são todos fictícios
 
 
 ## Métodos disponíveis
