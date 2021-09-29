@@ -8,12 +8,11 @@ use Procob\Exceptions\ProcobParameterException;
 class Client extends Guzzle
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $fullUrl;
 
     /**
-     * Client constructor.
      * @param array $config
      * @throws ProcobParameterException
      */
@@ -29,7 +28,7 @@ class Client extends Guzzle
      * @return array
      * @throws ProcobParameterException
      */
-    public function setConfig(array &$config)
+    public function setConfig(array &$config): array
     {
         $sdkVersion = Procob::getSdkVersion();
         $host       = $_SERVER['HTTP_HOST'] ?? '';
@@ -53,9 +52,9 @@ class Client extends Guzzle
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getFullUrl()
+    public function getFullUrl(): ?string
     {
         return $this->fullUrl;
     }
@@ -64,7 +63,7 @@ class Client extends Guzzle
      * @return string
      * @throws ProcobParameterException
      */
-    public function getCredentials()
+    public function getCredentials(): string
     {
         $username = Procob::getUser();
         $password = Procob::getPassword();

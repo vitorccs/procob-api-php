@@ -10,8 +10,9 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Procob API Test Suite">
-            <file>tests/ProcobTest.php</file>
+        <testsuite name="unit">
+            <file>tests/Http/ProcobTest.php</file>
+            <file>tests/Services/PersonValidatorTest.php</file>
             <file>tests/PersonTest.php</file>
         </testsuite>
     </testsuites>
@@ -20,10 +21,5 @@
             <directory suffix=".php">src/</directory>
         </whitelist>
     </filter>
-    <php>
-        <env name="PROCOB_API_TIMEOUT" value="30"/>
-        <env name="PROCOB_API_USER" value=""/>
-        <env name="PROCOB_API_PWD" value=""/>
-        <env name="DATA" value='{"basicPlan": true, "cpf":"147.082.809-04", "cnpj":"06.116.543/0001-55", "name": "Procob", "ddd": "11", "number": "26794674", "email": "procob@procob.com"}' />
-    </php>
 </phpunit>
+

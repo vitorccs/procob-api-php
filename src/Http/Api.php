@@ -7,11 +7,12 @@ use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\RequestException;
 use Procob\Exceptions\ProcobApiException;
 use Procob\Exceptions\ProcobRequestException;
+use GuzzleHttp\Client as Guzzle;
 
 class Api
 {
     /**
-     * @var Client
+     * @var Guzzle
      */
     protected $client;
 
@@ -28,11 +29,13 @@ class Api
      * @param string|null $data
      * @param array $options
      * @return mixed
-     * @throws GuzzleException
      * @throws ProcobRequestException
      * @throws ProcobApiException
+     * @throws GuzzleException
      */
-    public function get(string $endpoint = null, string $data = null, array $options = [])
+    public function get(string $endpoint = null,
+                        string $data = null,
+                        array  $options = [])
     {
         return $this->request('GET', $endpoint, $data, $options);
     }
@@ -42,7 +45,8 @@ class Api
      * @param string|null $data
      * @return string
      */
-    private static function getEndpointUrl(string $endpoint = null, string $data = null)
+    private static function getEndpointUrl(string $endpoint = null,
+                                           string $data = null): ?string
     {
         if (!empty($data)) $endpoint .= "/" . $data;
 
@@ -55,11 +59,14 @@ class Api
      * @param string|null $data
      * @param array $options
      * @return mixed
-     * @throws GuzzleException
      * @throws ProcobRequestException
      * @throws ProcobApiException
+     * @throws GuzzleException
      */
-    private function request(string $method, string $endpoint = null, string $data = null, array $options = [])
+    private function request(string $method,
+                             string $endpoint = null,
+                             string $data = null,
+                             array  $options = [])
     {
         $url = $this->getEndpointUrl($endpoint, $data);
 
@@ -95,11 +102,11 @@ class Api
 
     /**
      * @param ResponseInterface $response
-     * @param \stdClass $data
-     * @throws ProcobRequestException
+     * @param \stdClass|null $data
      * @throws ProcobApiException
+     * @throws ProcobRequestException
      */
-    private function checkForErrors(ResponseInterface $response, \stdClass $data)
+    private function checkForErrors(ResponseInterface $response, \stdClass $data = null)
     {
         $code = $response->getStatusCode();
         $statusClass = (int)($code / 100);
@@ -138,5 +145,13 @@ class Api
         $reason = $response->getReasonPhrase();
 
         throw new ProcobRequestException($reason, $code);
+    }
+
+    /**
+     * @param Guzzle $client
+     */
+    public function setClient(Guzzle $client): void
+    {
+        $this->client = $client;
     }
 }

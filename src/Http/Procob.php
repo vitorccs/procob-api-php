@@ -6,8 +6,19 @@ use Procob\Exceptions\ProcobParameterException;
 
 class Procob
 {
+    /**
+     * The ENV name for Request Timeout parameter
+     */
     const TIMEOUT = 'PROCOB_API_TIMEOUT';
+
+    /**
+     * The ENV name for API User parameter
+     */
     const USER = 'PROCOB_API_USER';
+
+    /**
+     * The ENV name for API Password parameter
+     */
     const PWD = 'PROCOB_API_PWD';
 
     /**
@@ -38,7 +49,7 @@ class Procob
     /**
      * @var string
      */
-    private static $sdkVersion = '1.0.3';
+    private static $sdkVersion = '1.1.0';
 
     /**
      * @param array $params
@@ -112,15 +123,15 @@ class Procob
     /**
      * @return string
      */
-    public static function getApiUrl()
+    public static function getApiUrl(): string
     {
         return static::$apiUrl;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public static function getTimeout()
+    public static function getTimeout(): int
     {
         if (static::$timeout === null) {
             static::setTimeout();
@@ -130,10 +141,10 @@ class Procob
     }
 
     /**
-     * @return string|null
+     * @return string
      * @throws ProcobParameterException
      */
-    public static function getUser()
+    public static function getUser(): string
     {
         if (static::$user === null) {
             static::setUser();
@@ -143,10 +154,10 @@ class Procob
     }
 
     /**
-     * @return string|null
+     * @return string
      * @throws ProcobParameterException
      */
-    public static function getPassword()
+    public static function getPassword(): string
     {
         if (static::$pwd === null) {
             static::setPassword();
@@ -158,7 +169,7 @@ class Procob
     /**
      * @return string
      */
-    public static function getSdkVersion()
+    public static function getSdkVersion(): string
     {
         return static::$sdkVersion;
     }
