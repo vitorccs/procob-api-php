@@ -146,33 +146,7 @@ class PersonTest extends BaseTest
         $this->assertSame('000', $response->code);
     }
 
-    public function validCpf(): array
-    {
-        return [
-            'valid' => [self::faker()->cpf()]
-        ];
-    }
 
-    public function validCnpj(): array
-    {
-        return [
-            'valid' => [self::faker()->cnpj()]
-        ];
-    }
-
-    public function validName(): array
-    {
-        return [
-            'valid' => [self::faker()->name()]
-        ];
-    }
-
-    public function validPhone(): array
-    {
-        return [
-            'valid' => [self::faker()->areaCode(), self::faker()->cellphone()]
-        ];
-    }
 
     public function validNeighborsParams(): array
     {
@@ -185,13 +159,6 @@ class PersonTest extends BaseTest
                     'numero' => self::faker()->numberBetween(1, 100)
                 ]
             ]
-        ];
-    }
-
-    public function validEmail(): array
-    {
-        return [
-            'valid' => [self::faker()->email()]
         ];
     }
 }

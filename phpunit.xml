@@ -12,6 +12,8 @@
     <testsuites>
         <testsuite name="unit">
             <file>tests/Http/ProcobTest.php</file>
+            <file>tests/Exceptions/ProcobApiExceptionTest.php</file>
+            <file>tests/Exceptions/ProcobRequestExceptionTest.php</file>
             <file>tests/Services/PersonValidatorTest.php</file>
             <file>tests/PersonTest.php</file>
         </testsuite>

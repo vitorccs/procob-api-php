@@ -122,10 +122,10 @@ class Api
     }
 
     /**
-     * @param \stdClass $data
+     * @param \stdClass|null $data
      * @throws ProcobApiException
      */
-    private function checkForApiException(\stdClass $data)
+    private function checkForApiException(\stdClass $data = null)
     {
         $code = intval($data->code ?? 0);
         $reason = $data->message ?? 'Unknown error';

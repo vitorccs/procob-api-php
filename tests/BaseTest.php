@@ -2,8 +2,6 @@
 
 namespace Procob\Test;
 
-use Faker\Factory;
-use Faker\Generator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -13,32 +11,12 @@ use Procob\Person;
 
 abstract class BaseTest extends TestCase
 {
-    /**
-     * @var Generator|null
-     */
-    protected static $faker = null;
+    use DataProviders;
 
     /**
      * @var MockHandler
      */
     protected $handler;
-
-    /**
-     *
-     */
-    const FAKER_LOCALE = 'pt_BR';
-
-    /**
-     * @return Generator
-     */
-    public static function faker(): Generator
-    {
-        if (is_null(self::$faker)) {
-            self::$faker = Factory::create(self::FAKER_LOCALE);
-        }
-
-        return self::$faker;
-    }
 
     /**
      * Run once
@@ -54,20 +32,6 @@ abstract class BaseTest extends TestCase
     protected function setUp(): void
     {
         $this->setFakeHttpClient();
-    }
-
-    /**
-     * Generate random env parameters
-     *
-     * @return array
-     */
-    protected static function generateParameters(): array
-    {
-        return [
-            Procob::TIMEOUT => self::faker()->numberBetween(1, 60),
-            Procob::USER => self::faker()->word(),
-            Procob::PWD => self::faker()->word(),
-        ];
     }
 
     /**
@@ -94,5 +58,19 @@ abstract class BaseTest extends TestCase
         ]);
 
         Person::api()->setClient($client);
+    }
+
+    /**
+     * Generate random env parameters
+     *
+     * @return array
+     */
+    protected static function generateParameters(): array
+    {
+        return [
+            Procob::TIMEOUT => self::faker()->numberBetween(1, 60),
+            Procob::USER => self::faker()->word(),
+            Procob::PWD => self::faker()->word(),
+        ];
     }
 }

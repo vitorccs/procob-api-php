@@ -10,6 +10,22 @@ use Procob\Test\BaseTest;
 class PersonValidatorTest extends BaseTest
 {
     /**
+     * @dataProvider validCpf
+     */
+    public function test_valid_cpf($cpf)
+    {
+        $this->assertNotEmpty(PersonValidator::validateCpfCnpj($cpf));
+    }
+
+    /**
+     * @dataProvider validCnpj
+     */
+    public function test_valid_cnpj($cnpj)
+    {
+        $this->assertNotEmpty(PersonValidator::validateCpfCnpj($cnpj));
+    }
+
+    /**
      * @dataProvider invalidCpfCnpj
      */
     public function test_invalid_cpf_cnpj($value)
@@ -17,6 +33,14 @@ class PersonValidatorTest extends BaseTest
         $this->expectException(ProcobParameterException::class);
         $this->expectExceptionMessage('CPF/CNPJ is not valid');
         PersonValidator::validateCpfCnpj($value);
+    }
+
+    /**
+     * @dataProvider validName
+     */
+    public function test_valid_name($name)
+    {
+        $this->assertNotEmpty(PersonValidator::validateName($name));
     }
 
     /**
@@ -30,6 +54,14 @@ class PersonValidatorTest extends BaseTest
     }
 
     /**
+     * @dataProvider validPhone
+     */
+    public function test_valid_ddd($ddd, $number)
+    {
+        $this->assertNotEmpty(PersonValidator::validatePhoneDdd($ddd));
+    }
+
+    /**
      * @dataProvider invalidPhone
      */
     public function test_invalid_ddd($value)
@@ -40,6 +72,14 @@ class PersonValidatorTest extends BaseTest
     }
 
     /**
+     * @dataProvider validPhone
+     */
+    public function test_valid_number($ddd, $number)
+    {
+        $this->assertNotEmpty(PersonValidator::validatePhoneNumber($number));
+    }
+
+    /**
      * @dataProvider invalidPhone
      */
     public function test_invalid_number($value)
@@ -47,6 +87,14 @@ class PersonValidatorTest extends BaseTest
         $this->expectException(ProcobParameterException::class);
         $this->expectExceptionMessage('Number is not valid');
         PersonValidator::validatePhoneNumber($value);
+    }
+
+    /**
+     * @dataProvider validEmail
+     */
+    public function test_valid_email($value)
+    {
+        $this->assertNotEmpty(PersonValidator::validateEmail($value));
     }
 
     /**
@@ -63,7 +111,9 @@ class PersonValidatorTest extends BaseTest
     {
         return [
             'empty' => [''],
-            'invalid' => ['a']
+            'invalid-syntax' => ['a'],
+            'invalid-cpf-digit' => ['257.296.290-00'],
+            'invalid-cnpj-digit' => ['99.263.146/0001-96']
         ];
     }
 
