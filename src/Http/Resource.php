@@ -13,9 +13,9 @@ abstract class Resource
     protected static $api = null;
 
     /**
-     * @return Api|null
+     * @return Api
      */
-    public static function api()
+    public static function api(): Api
     {
         if (is_null(static::$api)) {
             static::$api = new Api();
@@ -29,9 +29,9 @@ abstract class Resource
      * @param mixed $data
      * @param array $params
      * @return mixed
-     * @throws GuzzleException
      * @throws ProcobApiException
      * @throws ProcobRequestException
+     * @throws GuzzleException
      */
     public static function find(string $endpoint = null, $data = null, array $params = [])
     {

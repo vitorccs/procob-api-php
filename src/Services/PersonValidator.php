@@ -1,21 +1,23 @@
 <?php
 
-namespace Procob\Helpers;
+namespace Procob\Services;
 
 use Procob\Exceptions\ProcobParameterException;
+use Procob\Helpers\CpfCnpjHelper;
+use Procob\Helpers\SanitizerHelper;
 
 class PersonValidator
 {
     /**
-     * @param $cpf
-     * @return string|string[]|null
+     * @param string|int $cpf
+     * @return string
      * @throws ProcobParameterException
      */
-    public static function validateCpf($cpf)
+    public static function validateCpf($cpf): string
     {
-        $cpf = Sanitizer::cleanNumeric($cpf);
+        $cpf = SanitizerHelper::cleanNumeric($cpf);
 
-        if (!strlen($cpf) || !Validator::validateCpf($cpf)) {
+        if (!strlen($cpf) || !CpfCnpjHelper::validateCpf($cpf)) {
             throw new ProcobParameterException('CPF is not valid');
         }
 
@@ -23,15 +25,15 @@ class PersonValidator
     }
 
     /**
-     * @param $cnpj
-     * @return string|string[]|null
+     * @param string|int $cnpj
+     * @return string
      * @throws ProcobParameterException
      */
-    public static function validateCnpj($cnpj)
+    public static function validateCnpj($cnpj): string
     {
-        $cnpj = Sanitizer::cleanNumeric($cnpj);
+        $cnpj = SanitizerHelper::cleanNumeric($cnpj);
 
-        if (!strlen($cnpj) || !Validator::validateCpfCnpj($cnpj)) {
+        if (!strlen($cnpj) || !CpfCnpjHelper::validateCnpj($cnpj)) {
             throw new ProcobParameterException('CNPJ is not valid');
         }
 
@@ -39,15 +41,15 @@ class PersonValidator
     }
 
     /**
-     * @param $cpfCnpj
-     * @return string|string[]|null
+     * @param string|int $cpfCnpj
+     * @return string
      * @throws ProcobParameterException
      */
-    public static function validateCpfCnpj($cpfCnpj)
+    public static function validateCpfCnpj($cpfCnpj): string
     {
-        $cpfCnpj = Sanitizer::cleanNumeric($cpfCnpj);
+        $cpfCnpj = SanitizerHelper::cleanNumeric($cpfCnpj);
 
-        if (!strlen($cpfCnpj) || !Validator::validateCpfCnpj($cpfCnpj)) {
+        if (!strlen($cpfCnpj) || !CpfCnpjHelper::validateCpfCnpj($cpfCnpj)) {
             throw new ProcobParameterException('CPF/CNPJ is not valid');
         }
 
@@ -55,13 +57,13 @@ class PersonValidator
     }
 
     /**
-     * @param $name
-     * @return string|string[]|null
+     * @param string $name
+     * @return string
      * @throws ProcobParameterException
      */
-    public static function validateName($name)
+    public static function validateName(string $name): string
     {
-        $name = Sanitizer::cleanString($name);
+        $name = SanitizerHelper::cleanString($name);
 
         if (!strlen($name)) {
             throw new ProcobParameterException('Name is not valid');
@@ -71,13 +73,13 @@ class PersonValidator
     }
 
     /**
-     * @param $email
-     * @return string|string[]|null
+     * @param string $email
+     * @return string
      * @throws ProcobParameterException
      */
-    public static function validateEmail($email)
+    public static function validateEmail(string $email): string
     {
-        $email = Sanitizer::cleanString($email);
+        $email = SanitizerHelper::cleanString($email);
 
         if (!strlen($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new ProcobParameterException('E-mail is not valid');
@@ -87,13 +89,13 @@ class PersonValidator
     }
 
     /**
-     * @param $ddd
-     * @return string|string[]|null
+     * @param string|int $ddd
+     * @return string
      * @throws ProcobParameterException
      */
-    public static function validatePhoneDdd($ddd)
+    public static function validatePhoneDdd($ddd): string
     {
-        $ddd = Sanitizer::cleanNumeric($ddd);
+        $ddd = SanitizerHelper::cleanNumeric($ddd);
 
         if (strlen($ddd) != 2) {
             throw new ProcobParameterException('DDD is not valid');
@@ -103,13 +105,13 @@ class PersonValidator
     }
 
     /**
-     * @param $number
-     * @return string|string[]|null
+     * @param string|int $number
+     * @return string
      * @throws ProcobParameterException
      */
-    public static function validatePhoneNumber($number)
+    public static function validatePhoneNumber($number): string
     {
-        $number = Sanitizer::cleanNumeric($number);
+        $number = SanitizerHelper::cleanNumeric($number);
 
         if (strlen($number) != 8 && strlen($number) != 9) {
             throw new ProcobParameterException('Number is not valid');

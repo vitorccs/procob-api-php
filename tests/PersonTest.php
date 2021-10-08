@@ -1,285 +1,164 @@
 <?php
 declare(strict_types=1);
 
-namespace ApiBradesco\Test;
+namespace Procob\Test;
 
-use PHPUnit\Framework\TestCase;
-use Procob\Exceptions\ProcobApiException;
+use GuzzleHttp\Psr7\Response;
 use Procob\Person;
 
-class PersonTest extends TestCase
+class PersonTest extends BaseTest
 {
-    protected $data;
-
-    public function setUp()
+    /**
+     * Run once
+     */
+    public static function setUpBeforeClass(): void
     {
-        $this->data = json_decode(getenv('DATA'));
+        self::setEnvParameters();
     }
 
     /**
-     * @test
+     * Run before each test
      */
-    public function it_should_get_by_cpf()
+    protected function setUp(): void
     {
-        $response = Person::getByCpfCnpj($this->data->cpf);
+        parent::setUp();
 
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
+        $this->handler->append(new Response(200, [], '{"code": "000"}'));
     }
 
     /**
-     * @test
+     * @dataProvider validCpf
      */
-    public function it_should_get_by_cnpj()
+    public function test_get_by_cpf(string $cpf)
     {
-        $response = Person::getByCpfCnpj($this->data->cnpj);
+        $response = Person::getByCpfCnpj($cpf);
 
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
+        $this->assertIsObject($response);
+        $this->assertObjectHasAttribute('code', $response);
+        $this->assertSame('000', $response->code);
     }
 
     /**
-     * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage CPF/CNPJ is not valid
+     * @dataProvider validName
      */
-    public function it_should_validate_empty_cpf_cnpj()
+    public function test_get_by_name(string $cnpj)
     {
-        Person::getByCpfCnpj('');
+        $response = Person::getByName($cnpj);
+
+        $this->assertIsObject($response);
+        $this->assertObjectHasAttribute('code', $response);
+        $this->assertSame('000', $response->code);
     }
 
     /**
-     * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage CPF/CNPJ is not valid
+     * @dataProvider validPhone
      */
-    public function it_should_validate_null_cpf_cnpj()
+    public function test_get_by_phone(string $ddd, string $number)
     {
-        Person::getByCpfCnpj(null);
+        $response = Person::getByPhone($ddd, $number);
+
+        $this->assertIsObject($response);
+        $this->assertObjectHasAttribute('code', $response);
+        $this->assertSame('000', $response->code);
     }
 
     /**
-     * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage CPF/CNPJ is not valid
+     * @dataProvider validCnpj
      */
-    public function it_should_validate_invalid_cpf_cnpj()
+    public function test_get_cpf_cnpj_status(string $cnpj)
     {
-        Person::getByCpfCnpj('invalid');
+        $response = Person::getCpfCnpjStatus($cnpj);
+
+        $this->assertIsObject($response);
+        $this->assertObjectHasAttribute('code', $response);
+        $this->assertSame('000', $response->code);
     }
 
     /**
-     * @test
+     * @dataProvider validCnpj
      */
-    public function it_should_get_by_name()
+    public function test_get_company_partners(string $cnpj)
     {
-        $response = Person::getByName($this->data->name);
+        $response = Person::getCompanyPartners($cnpj);
 
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
+        $this->assertIsObject($response);
+        $this->assertObjectHasAttribute('code', $response);
+        $this->assertSame('000', $response->code);
     }
 
     /**
-     * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage Name is not valid
+     * @dataProvider validNeighborsParams
      */
-    public function it_should_validate_empty_name()
+    public function test_get_neighbors(array $params)
     {
-        Person::getByName('');
-    }
-
-    /**
-     * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage Name is not valid
-     */
-    public function it_should_validate_invalid_name()
-    {
-        Person::getByName("/");
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_get_by_name_with_params()
-    {
-        $params = [
-            'buscarPessoa' => 'SIM',
-            'tipoPessoa'   => 'F'
-        ];
-
-        $response = Person::getByName('João', $params);
-
-        $success = ($response->code ?? null) === '000';
-
-        $noCompanies = is_null($response->content->cnpj ?? null);
-
-        $this->assertTrue($success);
-        $this->assertTrue($noCompanies);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_get_by_phone()
-    {
-        $response = Person::getByPhone($this->data->ddd, $this->data->number);
-
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
-    }
-
-    /**
-     * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage DDD is not valid
-     */
-    public function it_should_validate_null_ddd()
-    {
-        Person::getByPhone(null, $this->data->number);
-    }
-
-    /**
-     * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage DDD is not valid
-     */
-    public function it_should_validate_invalid_ddd()
-    {
-        Person::getByPhone(1, $this->data->number);
-    }
-
-    /**
-     * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage Number is not valid
-     */
-    public function it_should_validate_null_number()
-    {
-        Person::getByPhone($this->data->ddd, null);
-    }
-
-    /**
-     * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage Number is not valid
-     */
-    public function it_should_validate_invalid_number()
-    {
-        Person::getByPhone($this->data->ddd, 111);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_get_by_cpf_cnpj_status()
-    {
-        $response = Person::getCpfCnpjStatus($this->data->cnpj);
-
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_get_company_partners()
-    {
-        if ($this->data->basicPlan) {
-            $this->expectException(ProcobApiException::class);
-        }
-
-        $response = Person::getCompanyPartners($this->data->cnpj);
-
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_get_neighbors()
-    {
-        $params = [
-            'endereco' => 'Bernardino de Campos',
-            'cidade' => 'São Paulo',
-            'uf' => 'SP',
-            'numero' => 294
-        ];
-
         $response = Person::getNeighbors($params);
 
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
+        $this->assertIsObject($response);
+        $this->assertObjectHasAttribute('code', $response);
+        $this->assertSame('000', $response->code);
     }
 
     /**
-     * @test
+     * @dataProvider validEmail
      */
-    public function it_should_get_by_email()
+    public function test_get_by_email(string $email)
     {
-        $response = Person::getByEmail($this->data->email);
+        $response = Person::getByEmail($email);
 
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
+        $this->assertIsObject($response);
+        $this->assertObjectHasAttribute('code', $response);
+        $this->assertSame('000', $response->code);
     }
 
     /**
-     * @test
-     * @expectedException        Procob\Exceptions\ProcobParameterException
-     * @expectedExceptionMessage E-mail is not valid
+     * @dataProvider validCpf
      */
-    public function it_should_validate_email()
+    public function test_national_insurance_status(string $cpf)
     {
-        Person::getByEmail("wrong@gmail");
+        $response = Person::getNationalInsuranceStatus($cpf);
+
+        $this->assertIsObject($response);
+        $this->assertObjectHasAttribute('code', $response);
+        $this->assertSame('000', $response->code);
     }
 
     /**
-     * @test
+     * @dataProvider validCpf
      */
-    public function it_should_get_national_insurance_status()
+    public function test_basic_data(string $cpf)
     {
-        $response = Person::getNationalInsuranceStatus($this->data->cpf);
+        $response = Person::getBasicData($cpf);
 
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
+        $this->assertIsObject($response);
+        $this->assertObjectHasAttribute('code', $response);
+        $this->assertSame('000', $response->code);
     }
 
     /**
-     * @test
+     * @dataProvider validCnpj
      */
-    public function it_should_get_basic_data()
+    public function test_company_profile(string $cpfCnpj)
     {
-        $response = Person::getBasicData($this->data->cnpj);
+        $response = Person::getCompanyProfile($cpfCnpj);
 
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
+        $this->assertIsObject($response);
+        $this->assertObjectHasAttribute('code', $response);
+        $this->assertSame('000', $response->code);
     }
 
-    /**
-     * @test
-     */
-    public function it_should_get_company_profile()
+
+
+    public function validNeighborsParams(): array
     {
-        if ($this->data->basicPlan) {
-            $this->expectException(ProcobApiException::class);
-        }
-
-        $response = Person::getCompanyProfile($this->data->cnpj);
-
-        $success = ($response->code ?? null) === '000';
-
-        $this->assertTrue($success);
+        return [
+            'valid' => [
+                [
+                    'endereco' => self::faker()->streetAddress(),
+                    'cidade' => self::faker()->city(),
+                    'uf' => self::faker()->stateAbbr(),
+                    'numero' => self::faker()->numberBetween(1, 100)
+                ]
+            ]
+        ];
     }
 }

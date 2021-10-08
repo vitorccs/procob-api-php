@@ -2,7 +2,7 @@
 
 namespace Procob\Helpers;
 
-class Validator
+class CpfCnpjHelper
 {
     /**
      * @param $cpf

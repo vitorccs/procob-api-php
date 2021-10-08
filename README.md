@@ -115,10 +115,6 @@ try {
 Caso queira contribuir, por favor, implementar testes de unidade em PHPUnit.
 
 Para executar:
-1) Faça uma cópia de phpunit.xml.dist em phpunit.xml na raíz do projeto
-2) Altere os parâmtros ENV com os dados de seu acesso
-3) Execute o comando abaixo no terminal dentro da pasta deste projeto:
-
 ```bash
 composer test
 ```

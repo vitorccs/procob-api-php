@@ -4,12 +4,12 @@ namespace Procob;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Procob\Http\Resource;
-use Procob\Helpers\PersonValidator;
+use Procob\Services\PersonValidator;
 
 class Person extends Resource
 {
     /**
-     * @param mixed $cpfCnpj
+     * @param string|int $cpfCnpj
      * @return mixed
      * @throws Exceptions\ProcobApiException
      * @throws Exceptions\ProcobParameterException
@@ -40,7 +40,7 @@ class Person extends Resource
     }
 
     /**
-     * @param $ddd
+     * @param string|int $ddd
      * @param $number
      * @return mixed
      * @throws Exceptions\ProcobApiException
@@ -57,7 +57,7 @@ class Person extends Resource
     }
 
     /**
-     * @param $cpfCnpj
+     * @param string|int $cpfCnpj
      * @param array $params
      * @return mixed
      * @throws Exceptions\ProcobApiException
@@ -73,7 +73,7 @@ class Person extends Resource
     }
 
     /**
-     * @param $cnpj
+     * @param string|int $cnpj
      * @return mixed
      * @throws Exceptions\ProcobApiException
      * @throws Exceptions\ProcobParameterException
@@ -115,7 +115,7 @@ class Person extends Resource
     }
 
     /**
-     * @param mixed $cpf
+     * @param string|int $cpf
      * @return mixed
      * @throws Exceptions\ProcobApiException
      * @throws Exceptions\ProcobParameterException
@@ -130,7 +130,7 @@ class Person extends Resource
     }
 
     /**
-     * @param mixed $cpfCnpj
+     * @param string|int $cpfCnpj
      * @return mixed
      * @throws Exceptions\ProcobApiException
      * @throws Exceptions\ProcobParameterException
@@ -145,7 +145,7 @@ class Person extends Resource
     }
 
     /**
-     * @param mixed $cnpj
+     * @param string|int $cnpj
      * @return mixed
      * @throws Exceptions\ProcobApiException
      * @throws Exceptions\ProcobParameterException
